@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gopal</title>
+
+    <style>
+       @import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: black;
+            
+        }
+
+        .container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            padding: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 50px;
+        
+            
+            p {
+                text-transform: uppercase;
+                font-family: 'Black Han Sans', sans-serif;
+                font-size: 10vh;
+                text-align: center;
+                margin: 0px 20px;
+                transition: all 0.2s ease-in-out;
+            }
+        }
+
+
+        .on {
+            -webkit-text-stroke: 1px rgb(255, 255, 255);
+            text-shadow: 0px 0px 8px rgb(255, 255, 255), 0px 0px 20px rgba(255, 255, 255, 0.5)
+        }
+        .white {
+            color: white;
+        }
+
+        #reload-button {
+
+            background:black;
+            color: rgb(192, 192, 192);
+            border: 1px solid rgb(26, 26, 26);
+            padding: 20px;
+            transition: all 0.2s ease-in-out;
+            
+            &:hover {
+                background:rgb(11, 11, 11);
+                border-color: black;
+            
+            }
+        }
+
+        .slider {
+            margin: 20px 0px 0px 20px;
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+
+            
+            p {
+                color: white;
+                margin-bottom: 10px;
+            }
+
+            input[type=range] {
+                appearance: none;
+                -webkit-appearance: none;
+                background-color: rgb(35, 35, 35);
+                height: 10px;
+            }
+            
+            input[type="range"]::-webkit-slider-thumb {
+                -webkit-appearance: none;
+                background-color: #ffd000;
+                width: 10px;
+                height: 26px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="container">
+        <!-- text generated with JS -->
+    </div>
+
+    <div class="slider" style="display: none;">
+        <div>
+            <p>Fade</p>
+            <input type="range" id="fade" min="0" max="0.3" value="0" step="0.05">
+        </div>
+        <div>
+            <p>Flicker duration</p>
+            <input type="range" id="flicker-duration" min="1" max="1000" value="100" step="50">
+        </div>
+        <input type="button" value="Click here to see effect (Refresh)" onClick="location.reload(true)" id="reload-button">
+    </div>
+
+    <script>
+        //type anything here
+        const text = "Gopal";
+
+        const fadeSlider = document.getElementById("fade");
+        const flickerDuration = document.getElementById("flicker-duration");
+
+
+        const container = document.getElementById("container");
+        function createP(text) {
+            for(let i=0; i< text.length; i++) {
+                const p = document.createElement("h1");
+                p.classList.add("flicker");
+                container.appendChild(p);
+                p.innerHTML = text[i];
+            }
+        }
+        createP(text);
+
+
+        let temp = 0;
+        const myInterval = setInterval(() => {
+            
+            const p = document.getElementsByClassName("flicker");
+            // const randomNumber = Math.floor(Math.random() * (max - min)) + min;
+            const randomNumber = Math.floor(Math.random() * (p.length));
+            
+            for(let i = 0; i<p.length; i++) {
+                p[i].style.transitionDuration = fadeSlider.value + "s";
+            }
+
+            temp = temp + 1;
+
+            if(!p[randomNumber].classList.contains("on") && temp<flickerDuration.value) {
+                p[randomNumber].classList.add("on");
+            } else {
+                if(temp < flickerDuration.value) {
+                    p[randomNumber].classList.remove("on");
+                    p[randomNumber].classList.remove("white");
+                } else {
+                    p[randomNumber].classList.add("white");
+                    p[randomNumber].classList.remove("on");
+                }
+            }
+            if(temp == flickerDuration+500) {
+                clearInterval(myInterval);
+            }
+        ;}, 20);
+    </script>
+    
+</body>
+</html>
