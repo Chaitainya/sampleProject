@@ -96,6 +96,8 @@
 </head>
 <body>
 
+    <button id="playGopal" type="button" onclick="play();">Play</button>
+
     <div class="container" id="container">
         <!-- text generated with JS -->
     </div>
@@ -113,6 +115,15 @@
     </div>
 
     <script>
+
+        (function(){
+            document.getElementById('playGopal').click();
+        })();
+
+        const play = () => {
+            window.speechSynthesis.speak(new SpeechSynthesisUtterance('hello gopal we are so happy you are here'));
+        }
+
         //type anything here
         const text = "Gopal";
 
